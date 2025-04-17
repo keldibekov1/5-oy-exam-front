@@ -31,7 +31,6 @@ export const ProductsList = ({ products, onEdit, onDelete }: ProductsListProps) 
 
   return (
     <Box sx={{ flexGrow: 1, padding: 2 }}>
-      <h1>Lorem ipsum dolor sit.</h1>
       <Grid container spacing={2}>
         {products?.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product?.id}>

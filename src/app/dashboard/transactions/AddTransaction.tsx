@@ -5,7 +5,14 @@ import { Button, TextField, Stack, MenuItem, Select, InputLabel, FormControl } f
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const AddTransaction = ({ onClose }: { onClose: () => void }) => {
+const AddTransaction = ({
+  onClose,
+  onAddSuccess,
+}: {
+  onClose: () => void;
+  onAddSuccess: () => void; 
+}) => {
+
   const [productId, setProductId] = useState('');
   const [variantId, setVariantId] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -15,7 +22,6 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
   const [customers, setCustomers] = useState<any[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<any[]>([]);
   const [customerData, setCustomerData] = useState<any>(null);
-  const [adminId, setAdminId] = useState('');
   const [products, setProducts] = useState<any[]>([]);
   const [variants, setVariants] = useState<any[]>([]);
 
@@ -23,7 +29,7 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
     const fetchProducts = async () => {
       try {
         const productsRes = await axios.get('https://keldibekov.online/products');
-        setProducts(productsRes.data);
+        setProducts(productsRes.data.data);
       } catch (error) {
         console.error('Mahsulotlar olishda xatolik:', error);
       }
@@ -77,11 +83,11 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleAddTransaction = async () => {
-    if (!productId || !variantId || quantity <= 0 || unitPrice <= 0 || !customerId || !adminId) {
+    if (!productId || !variantId || quantity <= 0 || unitPrice <= 0 || !customerId) {
       alert('Iltimos, barcha maydonlarni to‘ldiring!');
       return;
     }
-
+  
     const transaction = {
       type: 'SALE',
       productId,
@@ -89,14 +95,23 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
       quantity,
       unitPrice,
       customerId,
-      adminId,
     };
-
+  
+    const token = localStorage.getItem('custom-auth-token'); // 🔐 Tokenni olish
+  
     try {
-      const response = await axios.post('https://keldibekov.online/transactions', transaction);
+      const response = await axios.post(
+        'https://keldibekov.online/transactions',
+        transaction,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 🫡 JWT headerga qo‘shildi
+          },
+        }
+      );
+  
       console.log('Tranzaksiya muvaffaqiyatli qo‘shildi:', response.data);
-
-      // SweetAlert2 toast xabari
+  
       Swal.fire({
         toast: true,
         position: 'bottom-end',
@@ -104,15 +119,17 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
         title: 'Muvaffaqiyatli qo‘shildi',
         showConfirmButton: false,
         timer: 3000,
-        timerProgressBar: true,
+        timerProgressBar: true, 
       });
-
-      onClose(); // Dialogni yopish
+      onAddSuccess(); 
+      onClose();
     } catch (error) {
       console.error('Tranzaksiya qo‘shishda xatolik:', error);
       alert('Tranzaksiya qo‘shishda xatolik');
     }
   };
+  //
+  
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -133,7 +150,7 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
           onChange={(e) => setProductId(e.target.value)}
           label="Mahsulot"
         >
-          {products.map((product) => (
+          {products?.map((product) => (
             <MenuItem key={product.id} value={product.id}>
               {product.name}
             </MenuItem>
@@ -148,7 +165,7 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
           onChange={(e) => setVariantId(e.target.value)}
           label="Variant"
         >
-          {variants.map((variant) => (
+          {variants?.map((variant) => (
             <MenuItem key={variant.id} value={variant.id}>
               {variant.storage} - {variant.color.name}
             </MenuItem>
@@ -188,13 +205,13 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
           label="Mijozni tanlang"
         >
           {filteredCustomers.length > 0 ? (
-            filteredCustomers.map((customer) => (
+            filteredCustomers?.map((customer) => (
               <MenuItem key={customer.id} value={customer.id}>
                 {customer.firstName} {customer.lastName} - {customer.phoneNumber}
               </MenuItem>
             ))
           ) : (
-            customers.map((customer) => (
+            customers?.map((customer) => (
               <MenuItem key={customer.id} value={customer.id}>
                 {customer.firstName} {customer.lastName} - {customer.phoneNumber}
               </MenuItem>
@@ -210,17 +227,11 @@ const AddTransaction = ({ onClose }: { onClose: () => void }) => {
         </div>
       )}
 
-      <TextField
-        label="Admin ID"
-        value={adminId}
-        onChange={(e) => setAdminId(e.target.value)}
-        fullWidth
-      />
 
       <Button 
         variant="contained" 
         onClick={handleAddTransaction}
-        disabled={!productId || !variantId || quantity <= 0 || unitPrice <= 0 || !customerId || !adminId}
+        disabled={!productId || !variantId || quantity <= 0 || unitPrice <= 0 || !customerId }
       >
         Tranzaksiya qo‘shish
       </Button>
