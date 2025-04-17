@@ -31,13 +31,30 @@ export interface ResetPasswordParams {
 }
 
 class AuthClient {
-  // async signUp(_: SignUpParams): Promise<{ error?: string }> {
-  //   // API so'rov yuborish (hozirgi holatda faqat token generatsiyasi)
-  //   const token = generateToken();
-  //   localStorage.setItem('custom-auth-token', token);
+  async signUp(params: SignUpParams): Promise<{ error?: string }> {
+    const { firstName, lastName, email, password } = params;
 
-  //   return {};
-  // }
+    // Ro'yxatdan o'tish uchun API so'rov yuborish
+    const response = await fetch('https://keldibekov.online/auth/signup', {  // URLni mos ravishda o'zgartiring
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+      },
+      body: JSON.stringify({ firstName, lastName, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.status !== 201) {
+      return { error: data.message || 'Registration failed' };
+    }
+
+    const token = data.token; // Agar token qaytarsa
+    localStorage.setItem('custom-auth-token', token);
+
+    return {};
+  }
 
   async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
     return { error: 'Ijtimoiy autentifikatsiya amalga oshirilmagan' };
@@ -92,3 +109,6 @@ class AuthClient {
 }
 
 export const authClient = new AuthClient();
+
+
+
