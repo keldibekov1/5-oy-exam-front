@@ -6,6 +6,7 @@ import {
   TextField, Select, MenuItem, InputLabel, FormControl, Stack
 } from '@mui/material';
 import axios from 'axios';
+import Swal from 'sweetalert2' 
 
 interface AddProductDialogProps {
   open: boolean;
@@ -13,7 +14,7 @@ interface AddProductDialogProps {
   onAdd: (product: any) => void;
   initialProduct?: any;
 }
-
+ 
 const AddProductDialog: React.FC<AddProductDialogProps> = ({
   open,
   onClose,
@@ -73,7 +74,7 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const product = {
       id: initialProduct?.id,
       name,
@@ -89,7 +90,28 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
         purchasePrice: variant.purchasePrice,
       })),
     };
-    onAdd(product);
+  
+    try {
+      await onAdd(product);
+  
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: 'success',
+        title: initialProduct ? 'Muvaffaqiyatli yangilandi' : 'Muvaffaqiyatli qo‘shildi',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+  
+      onClose();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Xatolik!',
+        text: 'Mahsulotni saqlashda xatolik yuz berdi. Internetingni tekshir yoki backendga qaragin 😡',
+      });
+    }
   };
 
   const isFormValid =
