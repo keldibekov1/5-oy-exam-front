@@ -1,0 +1,145 @@
+/* Asosiy tanasi */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #333;
+  }
+  
+  /* Header sticky holatda yuqorida turadi */
+  header {
+    position: sticky;
+    top: 0;
+    background-color: #568b81;
+    padding: 15px 0;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: auto;
+    padding: 0 15px;
+  }
+  
+  .logo {
+    height: 50px;
+  }
+  
+  /* Forma va kontent qismi */
+  main {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 0 15px;
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  /* Inputlar */
+  input, select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Fayl yuklash */
+  .file-label {
+    text-align: left;
+    font-size: 14px;
+  }
+  
+  .file-label input {
+    margin-top: 5px;
+  }
+  
+  .file-label small {
+    display: block;
+    margin-top: 5px;
+    color: #888;
+  }
+  
+  /* Submit tugmasi */
+  .submit {
+    background-color: #568b81;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .submit:hover {
+    background-color: #3f6f67;
+  }
+  
+  /* Qo‘shimcha maydonlar */
+  .extra-fields {
+    display: none;
+    margin-top: 20px;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #568b81;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+  }
+  
+  footer div {
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive dizayn */
+  @media screen and (max-width: 600px) {
+    .header-content {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .logo {
+      height: 40px;
+    }
+  
+    h2 {
+      font-size: 22px;
+    }
+  
+    p {
+      font-size: 14px;
+    }
+  
+    form {
+      gap: 12px;
+    }
+  
+    input, select {
+      font-size: 14px;
+    }
+  
+    .submit {
+      padding: 10px;
+      font-size: 14px;
+    }
+  
+    footer {
+      font-size: 14px;
+      padding: 15px;
+    }
+  }
+  

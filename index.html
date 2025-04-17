@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xalqaro Nordik universiteti</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .extra-fields {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .file-label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .submit {
+      margin-top: 20px;
+      background-color: #4e877c;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit:hover {
+      background-color: #3c6c63;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <img src="https://admission.nordicuniversity.org/assets/Logo.758a650e3083a489782a134b028172ac-DmIK3hLt.svg" alt="Nordic University" class="logo">
+    </div>
+  </header>
+
+  <main>
+    <h2>Xalqaro Nordik universiteti</h2>
+    <p>Bakalavr ta’lim turi uchun formani to‘ldiring</p>
+
+    <form>
+      <input type="text" placeholder="Ism *">
+      <input type="text" placeholder="Familiya *">
+      <input type="text" placeholder="Otasining ismi *">
+      <input type="tel" placeholder="Telefon *">
+      <input type="text" placeholder="Tug‘ilgan yilingiz *">
+      <input type="text" placeholder="Yashash manzilingiz *">
+
+      <label class="file-label">
+        <span>Pasport *</span>
+        <input type="file">
+        <small>ID karta orqasidagi (pasport) yuklang</small>
+      </label>
+
+      <input type="text" placeholder="Pasport seriyasi va raqami *">
+      <input type="text" placeholder="JSHSHIR (PINFL) *">
+      <input type="text" placeholder="Kim tomonidan berilgan *">
+      <input type="text" placeholder="Berilgan vaqti *">
+
+      <select id="educationType">
+        <option selected disabled>Ta’lim shakli *</option>
+        <option value="kunduzgi">Kunduzgi</option>
+        <option value="sirtqi">Sirtqi</option>
+        <option value="kechki">Kechki</option>
+      </select>
+
+      <div id="extraFields" class="extra-fields">
+        <select>
+          <option selected disabled>Ta’lim tili *</option>
+          <option value="uzbek">O‘zbek</option>
+          <option value="rus">Rus</option>
+          <option value="english">Ingliz</option>
+        </select>
+
+        <select>
+          <option selected disabled>Ta’lim yo‘nalishi *</option>
+          <option value="60410100">60410100 - Iqtisodiyot</option>
+          <option value="60410200">60410200 - Menejment</option>
+          <option value="60410300">60410300 - Moliya</option>
+        </select>
+
+        <label>
+          <input type="checkbox">
+          Men oflayn imtihonda qatnashishni xohlayman.
+        </label>
+
+        <label class="file-label">
+          <span>Til sertifikati fayli:</span>
+          <input type="file">
+        </label>
+
+        <label class="file-label">
+          <span>DTM:</span>
+          <input type="file">
+        </label>
+      </div>
+
+      <button type="submit" class="submit">YUBORISH</button>
+    </form>
+  </main>
+
+  <footer>
+    <div>
+      <p>BIZ BILAN BOG‘LANISH</p>
+      <p>📞 +998955084400</p>
+      <p>📧 info@nordicuniversity.org</p>
+      <p>🌐 www.nordicuniversity.org</p>
+    </div>
+    <p>Xalqaro Nordik universiteti 2024. Barcha huquqlar himoyalangan.</p>
+  </footer>
+
+  <script>
+    const educationSelect = document.getElementById('educationType');
+    const extraFields = document.getElementById('extraFields');
+
+    educationSelect.addEventListener('change', function () {
+      if (this.value === 'kunduzgi') {
+        extraFields.style.display = 'block';
+      } else {
+        extraFields.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
