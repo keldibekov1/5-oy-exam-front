@@ -53,17 +53,25 @@ const ProductsPage = () => {
   
 
   const handleUpdateProduct = async (updated: any) => {
+    const token = localStorage.getItem('custom-auth-token');
+    if (!token) {
+      console.error("Token yo‘q, iltimos qayta login qiling.");
+      return;
+    }
+  
     try {
       const res = await fetch(`https://keldibekov.online/products/${updated?.id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify(updated),
       });
-
-
+  
       if (!res.ok) throw new Error('Xatolik: mahsulot yangilanmadi');
       const updatedProduct = await res.json();
-
+  
       setProducts((prev) =>
         prev?.map((p) => (p?.id === updatedProduct?.id ? updatedProduct : p))
       );
@@ -72,6 +80,7 @@ const ProductsPage = () => {
       console.error('Yangilashda xatolik:', err);
     }
   };
+  
 
   const handleDeleteProduct = async (id: string) => {
     try {
