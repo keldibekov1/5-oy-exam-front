@@ -32,29 +32,29 @@ export const ProductsList = ({ products, onEdit, onDelete }: ProductsListProps) 
   return (
     <Box sx={{ flexGrow: 1, padding: 2 }}>
       <h1>Lorem ipsum dolor sit.</h1>
-      {/* <Grid container spacing={2}>
+      <Grid container spacing={2}>
         {products?.map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product.id}>
+          <Grid item xs={12} sm={6} md={4} key={product?.id}>
             <Card variant="outlined">
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h6">{product.name}</Typography>
+                  <Typography variant="h6">{product?.name}</Typography>
                   <Stack direction="row" spacing={1}>
                     <IconButton onClick={() => onEdit(product)}><Edit /></IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(product.id)}><Delete /></IconButton>
+                    <IconButton color="error" onClick={() => handleDelete(product?.id)}><Delete /></IconButton>
                   </Stack>
                 </Stack>
 
-                <Typography variant="subtitle1" color="text.secondary">{product.model}</Typography>
-                <Typography variant="body2">Umumiy zaxira: {product.stock}</Typography>
-                <Typography variant="body2">Kategoriya: {product.category?.name || 'Nomaʼlum'}</Typography>
-                <Typography variant="body2">Yetkazib beruvchi: {product.supplier || '-'}</Typography>
+                <Typography variant="subtitle1" color="text.secondary">{product?.model}</Typography>
+                <Typography variant="body2">Umumiy zaxira: {product?.stock}</Typography>
+                <Typography variant="body2">Kategoriya: {product?.category?.name || 'Nomaʼlum'}</Typography>
+                <Typography variant="body2">Yetkazib beruvchi: {product?.supplier || '-'}</Typography>
                 <Divider sx={{ my: 1 }} />
 
                 {Object.entries(
-                  product.variants.reduce((acc: any, variant: any) => {
-                    if (!acc[variant.storage]) acc[variant.storage] = [];
-                    acc[variant.storage].push(variant);
+                  product?.variants.reduce((acc: any, variant: any) => {
+                    if (!acc[variant?.storage]) acc[variant?.storage] = [];
+                    acc[variant?.storage].push(variant);
                     return acc;
                   }, {})
                 )?.map(([storage, variants]: any) => (
@@ -66,8 +66,8 @@ export const ProductsList = ({ products, onEdit, onDelete }: ProductsListProps) 
                       </AccordionSummary>
                       <AccordionDetails>
                         {variants?.map((variant: any) => (
-                          <Typography key={variant.id} variant="body2" sx={{ mb: 1 }}>
-                            🎨 {variant.color?.name || 'Nomaʼlum'} - {variant.stock} dona ( {variant.purchasePrice.toLocaleString()} so'm)
+                          <Typography key={variant?.id} variant="body2" sx={{ mb: 1 }}>
+                            🎨 {variant?.color?.name || 'Nomaʼlum'} - {variant?.stock} dona ( {variant?.purchasePrice.toLocaleString()} so'm)
                           </Typography>
                         ))}
                       </AccordionDetails>
@@ -78,7 +78,7 @@ export const ProductsList = ({ products, onEdit, onDelete }: ProductsListProps) 
             </Card>
           </Grid>
         ))}
-      </Grid> */}
+      </Grid>
     </Box>
   );
 };
