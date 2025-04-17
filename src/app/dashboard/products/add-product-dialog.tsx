@@ -81,7 +81,7 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
       categoryId,
       userId,
       supplier,
-      variants: variants.map((variant) => ({
+      variants: variants?.map((variant) => ({
         id: variant.id,
         colorId: variant.colorId,
         storage: variant.storage,
@@ -106,7 +106,7 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel>Kategoriya</InputLabel>
           <Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} label="Kategoriya">
-            {categories.map((c) => (
+            {categories?.map((c) => (
               <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>
             ))}
           </Select>
@@ -114,7 +114,7 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
 
         <TextField fullWidth label="Supplier (ixtiyoriy)" value={supplier} onChange={(e) => setSupplier(e.target.value)} sx={{ mb: 2 }} />
 
-        {variants.map((v, i) => (
+        {variants?.map((v, i) => (
           <Stack direction="row" spacing={2} key={i}>
             <FormControl fullWidth sx={{ mb: 2 }}>
               <InputLabel>Rang</InputLabel>
@@ -123,7 +123,7 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
                 newV[i].colorId = e.target.value;
                 setVariants(newV);
               }} label="Rang">
-                {colors.map((c) => (
+                {colors?.map((c) => (
                   <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>
                 ))}
               </Select>
