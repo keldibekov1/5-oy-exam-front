@@ -15,7 +15,7 @@ const ProductsPage = () => {
     try {
       const res = await fetch('https://keldibekov.online/products');
       const data = await res.json();
-      setProducts(data);
+      setProducts(data?.data);
     } catch (err) {
       console.error('Mahsulotlarni olishda xatolik:', err);
     }
@@ -44,18 +44,18 @@ const ProductsPage = () => {
 
   const handleUpdateProduct = async (updated: any) => {
     try {
-      const res = await fetch(`https://keldibekov.online/products/${updated.id}`, {
+      const res = await fetch(`https://keldibekov.online/products/${updated?.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated),
       });
 
-      
+
       if (!res.ok) throw new Error('Xatolik: mahsulot yangilanmadi');
       const updatedProduct = await res.json();
 
       setProducts((prev) =>
-        prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+        prev?.map((p) => (p?.id === updatedProduct?.id ? updatedProduct : p))
       );
       setEditProduct(null);
     } catch (err) {
@@ -70,7 +70,7 @@ const ProductsPage = () => {
       });
 
       if (!res.ok) throw new Error('Xatolik: mahsulot o‘chmadi');
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+      setProducts((prev) => prev?.filter((p) => p.id !== id));
     } catch (err) {
       console.error('O‘chirishda xatolik:', err);
     }

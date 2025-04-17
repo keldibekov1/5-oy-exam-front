@@ -23,7 +23,7 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
   const [name, setName] = useState('');
   const [model, setModel] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [userId] = useState('93b58610-6676-445f-bc1d-2abb5b5f0fab');
+  const [userId] = useState('f181f120-e1c4-4868-baf3-b1b25b452c92');
   const [supplier, setSupplier] = useState('');
   const [variants, setVariants] = useState<any[]>([
     { colorId: '', storage: '', stock: 0, purchasePrice: 0 },
