@@ -32,7 +32,7 @@ export const ProductsList = ({ products, onEdit, onDelete }: ProductsListProps) 
   return (
     <Box sx={{ flexGrow: 1, padding: 2 }}>
       <Grid container spacing={2}>
-        {products.map((product) => (
+        {products?.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
             <Card variant="outlined">
               <CardContent>
@@ -56,7 +56,7 @@ export const ProductsList = ({ products, onEdit, onDelete }: ProductsListProps) 
                     acc[variant.storage].push(variant);
                     return acc;
                   }, {})
-                ).map(([storage, variants]: any) => (
+                )?.map(([storage, variants]: any) => (
                   <Box key={storage} sx={{ mb: 2 }}>
                     <Typography variant="subtitle2">💾 Model: {storage}</Typography>
                     <Accordion>
@@ -64,7 +64,7 @@ export const ProductsList = ({ products, onEdit, onDelete }: ProductsListProps) 
                         <Typography>Variantlar</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        {variants.map((variant: any) => (
+                        {variants?.map((variant: any) => (
                           <Typography key={variant.id} variant="body2" sx={{ mb: 1 }}>
                             🎨 {variant.color?.name || 'Nomaʼlum'} - {variant.stock} dona ( {variant.purchasePrice.toLocaleString()} so'm)
                           </Typography>
