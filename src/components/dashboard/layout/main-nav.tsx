@@ -17,10 +17,33 @@ import { usePopover } from '@/hooks/use-popover';
 import { MobileNav } from './mobile-nav';
 import { UserPopover } from './user-popover';
 
+type User = {
+  firstname: string;
+  lastname: string;
+  email: string;
+  img?: string; // optional
+};
+
 export function MainNav(): React.JSX.Element {
   const [openNav, setOpenNav] = React.useState<boolean>(false);
+  const [user, setUser] = React.useState<User | null>(null);
 
   const userPopover = usePopover<HTMLDivElement>();
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('custom-auth-token');
+    if (!token) return;
+
+    fetch('https://keldibekov.online/auth/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: '*/*',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setUser(data))
+      .catch((err) => console.error('Avatarni olishda xato:', err.message));
+  }, []);
 
   return (
     <React.Fragment>
@@ -70,9 +93,11 @@ export function MainNav(): React.JSX.Element {
             <Avatar
               onClick={userPopover.handleOpen}
               ref={userPopover.anchorRef}
-              src="/assets/avatar.png"
+              src={user?.img || undefined}
               sx={{ cursor: 'pointer' }}
-            />
+            >
+              {!user?.img && user?.firstname?.[0]}
+            </Avatar>
           </Stack>
         </Stack>
       </Box>

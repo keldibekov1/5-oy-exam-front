@@ -9,77 +9,140 @@ import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
-
-const states = [
-  { value: 'alabama', label: 'Alabama' },
-  { value: 'new-york', label: 'New York' },
-  { value: 'san-francisco', label: 'San Francisco' },
-  { value: 'los-angeles', label: 'Los Angeles' },
-] as const;
+import axios from 'axios';
+import Swal from 'sweetalert2'; // SweetAlert2 importi
 
 export function AccountDetailsForm(): React.JSX.Element {
+  const [formData, setFormData] = React.useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+  });
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('custom-auth-token');
+    if (!token) {
+      console.warn("Token topilmadi!");
+      return;
+    }
+
+    axios
+      .get('https://keldibekov.online/auth/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const { firstname, lastname, email } = res.data;
+        setFormData({ firstname, lastname, email });
+      })
+      .catch((err) => {
+        console.error('Xatolik:', err);
+        if (err.response) {
+          console.error('Status:', err.response.status);
+          console.error('Data:', err.response.data);
+        }
+      });
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const token = localStorage.getItem('custom-auth-token');
+    if (!token) {
+      console.warn("Token topilmadi!");
+      return;
+    }
+
+    const payload = {
+      firstname: formData.firstname,
+      lastname: formData.lastname,
+    };
+
+    try {
+      const response = await axios.patch(
+        'https://keldibekov.online/auth/me',
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log('Yangi maʼlumotlar saqlandi:', response.data);
+
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Muvaffaqiyatli qo‘shildi',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
+      // Sahifani yangilash
+      window.location.reload();
+    } catch (err: any) {
+      console.error('PATCH xatolik:', err);
+
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: 'error',
+        title: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    }
+  };
+
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-      }}
-    >
+    <form onSubmit={handleSubmit}>
       <Card>
-        <CardHeader subheader="The information can be edited" title="Profile" />
+        <CardHeader subheader="Ma'lumotlarni o'zgartirishingiz mumkin" title="Profil" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
             <Grid md={6} xs={12}>
               <FormControl fullWidth required>
-                <InputLabel>First name</InputLabel>
-                <OutlinedInput defaultValue="Sofia" label="First name" name="firstName" />
+                <InputLabel shrink>Ism</InputLabel>
+                <OutlinedInput
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  label="Ism"
+                  name="firstname"
+                />
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
               <FormControl fullWidth required>
-                <InputLabel>Last name</InputLabel>
-                <OutlinedInput defaultValue="Rivers" label="Last name" name="lastName" />
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth required>
-                <InputLabel>Email address</InputLabel>
-                <OutlinedInput defaultValue="sofia@devias.io" label="Email address" name="email" />
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>Phone number</InputLabel>
-                <OutlinedInput label="Phone number" name="phone" type="tel" />
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>State</InputLabel>
-                <Select defaultValue="New York" label="State" name="state" variant="outlined">
-                  {states.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>City</InputLabel>
-                <OutlinedInput label="City" />
+                <InputLabel shrink>Familiya</InputLabel>
+                <OutlinedInput
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  label="Familiya"
+                  name="lastname"
+                />
               </FormControl>
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Save details</Button>
+          <Button type="submit" variant="contained">
+            Saqlash
+          </Button>
         </CardActions>
       </Card>
     </form>

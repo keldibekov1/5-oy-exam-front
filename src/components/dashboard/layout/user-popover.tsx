@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import RouterLink from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -17,6 +19,12 @@ import { authClient } from '@/lib/auth/client';
 import { logger } from '@/lib/default-logger';
 import { useUser } from '@/hooks/use-user';
 
+type User = {
+  firstname: string;
+  lastname: string;
+  email: string;
+};
+
 export interface UserPopoverProps {
   anchorEl: Element | null;
   onClose: () => void;
@@ -25,24 +33,35 @@ export interface UserPopoverProps {
 
 export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): React.JSX.Element {
   const { checkSession } = useUser();
-
   const router = useRouter();
+
+  const [user, setUser] = React.useState<User | null>(null);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('custom-auth-token');
+    if (!token) return;
+
+    fetch('https://keldibekov.online/auth/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: '*/*',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setUser(data))
+      .catch((err) => console.error('Xatolik:', err.message));
+  }, []);
 
   const handleSignOut = React.useCallback(async (): Promise<void> => {
     try {
       const { error } = await authClient.signOut();
-
       if (error) {
         logger.error('Sign out error', error);
         return;
       }
 
-      // Refresh the auth state
       await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router and we need to do it manually
       router.refresh();
-      // After refresh, AuthGuard will handle the redirect
     } catch (err) {
       logger.error('Sign out error', err);
     }
@@ -57,9 +76,11 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       slotProps={{ paper: { sx: { width: '240px' } } }}
     >
       <Box sx={{ p: '16px 20px ' }}>
-        <Typography variant="subtitle1">Sofia Rivers</Typography>
+        <Typography variant="subtitle1">
+          {user ? `${user.firstname} ${user.lastname}` : 'Yuklanmoqda...'}
+        </Typography>
         <Typography color="text.secondary" variant="body2">
-          sofia.rivers@devias.io
+          {user ? user.email : ''}
         </Typography>
       </Box>
       <Divider />
