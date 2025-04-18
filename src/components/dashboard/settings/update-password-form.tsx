@@ -82,7 +82,6 @@ export function UpdatePasswordForm({ onClose }: Props): React.JSX.Element {
         timerProgressBar: true,
       });
 
-      // Parolni o'zgartirganidan so'ng inputlarni tozalash
       setForm({
         newPassword: '',
         confirmPassword: '',

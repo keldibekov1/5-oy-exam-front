@@ -9,7 +9,8 @@ import { Palette as PaletteIcon } from '@phosphor-icons/react/dist/ssr/Palette';
 import { Folder as FolderIcon } from '@phosphor-icons/react/dist/ssr/Folder'; // 🔥 YANGI KATEGORIYA IKONKASI
 import { Phone as PhoneIcon } from '@phosphor-icons/react/dist/ssr/Phone'; // 📱 Telefon ikonkasi
 import { MapPin as MapPinIcon } from '@phosphor-icons/react/dist/ssr/MapPin'; // 🔥 YANGI REGION IKONKASI
-
+import { Repeat } from '@phosphor-icons/react'; // 🔥 Yangi tranzaksiyalar uchun ikona
+import { ArrowCounterClockwise } from '@phosphor-icons/react'; // 🔥 Yangi qaytarmalar uchun ikona
 
 export const navIcons = {
   'chart-pie': ChartPieIcon,
@@ -22,4 +23,6 @@ export const navIcons = {
   'folder': FolderIcon, // 🔥 YANGI KATEGORIYA IKONKASI
   'phone': PhoneIcon, // 📱 Telefon ikonkasi
   'map-pin': MapPinIcon, // 🔥 YANGI REGION IKONKASI
+  'repeat': Repeat, // 🔥 Yangi tranzaksiyalar ikonkasi
+  'arrow-counter-clockwise': ArrowCounterClockwise, // 🔥 Yangi qaytarmalar ikonkasi
 } as Record<string, Icon>;

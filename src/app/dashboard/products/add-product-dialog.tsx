@@ -33,20 +33,21 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({
   const [colors, setColors] = useState<any[]>([]);
 
   useEffect(() => {
-    if (initialProduct) {
+    if (initialProduct && open) {
       setName(initialProduct.name);
       setModel(initialProduct.model);
       setCategoryId(initialProduct.categoryId);
       setSupplier(initialProduct.supplier || '');
       setVariants(initialProduct.variants || []);
-    } else {
+    } else if (!initialProduct && open) {
       setName('');
       setModel('');
       setCategoryId('');
       setSupplier('');
       setVariants([{ colorId: '', storage: '', stock: 0, purchasePrice: 0 }]);
     }
-  }, [initialProduct]);
+  }, [initialProduct, open]); 
+  
 
   useEffect(() => {
     const fetchCategoriesAndColors = async () => {

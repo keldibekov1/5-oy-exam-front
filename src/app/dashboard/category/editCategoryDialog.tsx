@@ -22,24 +22,52 @@ interface EditCategoryDialogProps {
 export function EditCategoryDialog({ open, onClose, category, onEdit }: EditCategoryDialogProps) {
   const [name, setName] = React.useState(category.name);
 
-  const handleSubmit = () => {
+  React.useEffect(() => {
+    setName(category.name);
+  }, [category]);
+
+  const handleSubmit = async () => {
     if (!name) return;
 
-    onEdit({ id: category.id, name });
-    setName('');
+    const token = localStorage.getItem('custom-auth-token'); // <<< token shu yerdan olinadi
 
-   Swal.fire({
-  toast: true,
-  position: 'bottom-end', 
-  icon: 'success',
-  title: 'Kategoriya muvaffaqiyatli tahrirlandi',
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true
-});
+    if (!token) {
+      Swal.fire('Xatolik', 'Token topilmadi. Avval login qiling!', 'error');
+      return;
+    }
 
+    try {
+      const res = await fetch(`https://keldibekov.online/category/${category.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name }),
+      });
 
-    onClose();
+      if (!res.ok) {
+        throw new Error('Tahrirlashda xatolik yuz berdi');
+      }
+
+      const updatedCategory = await res.json();
+      onEdit(updatedCategory);
+
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Kategoriya muvaffaqiyatli tahrirlandi',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
+      onClose();
+    } catch (error) {
+      console.error(error);
+      Swal.fire('Xatolik', 'Kategoriya tahrirlanmadi', 'error');
+    }
   };
 
   return (

@@ -8,6 +8,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { CategoriesTable, Category } from '@/components/dashboard/category/categories-table';
 import { AddCategoryDialog } from './addcategory';
 import { EditCategoryDialog } from './editCategoryDialog';
+import Swal from 'sweetalert2';
 
 export default function Page(): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
@@ -74,18 +75,49 @@ export default function Page(): React.JSX.Element {
   };
 
   const handleEditCategory = (category: Category) => {
-    setSelectedCategory(category);  // Tahrirlash uchun tanlangan kategoriya
-    setEditOpen(true);  // Tahrirlash oynasini ochish
+    setSelectedCategory(category);  
+    setEditOpen(true);  
   };
 
   const handleUpdateCategory = (category: { id: string; name: string }) => {
     setCategoryList(prev => prev.map(item => item.id === category.id ? { ...item, name: category.name } : item));
   };
 
-  const handleDeleteCategory = (categoryId: string) => {
-    setCategoryList(prev => prev.filter(category => category.id !== categoryId));
-    console.log('Deleted category with id:', categoryId);
+  const handleDeleteCategory = async (categoryId: string) => {
+    const token = localStorage.getItem('custom-auth-token');
+  
+    if (!token) {
+      Swal.fire('Xatolik', 'Token topilmadi. Avval login qiling!', 'error');
+      return;
+    }
+  
+    try {
+      const res = await fetch(`https://keldibekov.online/category/${categoryId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!res.ok) throw new Error('Kategoriya o‘chirilmadi');
+  
+      setCategoryList(prev => prev.filter(category => category.id !== categoryId));
+  
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Kategoriya o‘chirildi',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    } catch (err) {
+      console.error('O‘chirishda xatolik:', err);
+      Swal.fire('Xatolik', 'Kategoriya o‘chirilmadi', 'error');
+    }
   };
+  
 
   return (
     <>

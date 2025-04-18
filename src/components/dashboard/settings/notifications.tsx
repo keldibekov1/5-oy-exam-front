@@ -13,7 +13,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
-import Swal from 'sweetalert2';  // SweetAlertni import qilish
+import Swal from 'sweetalert2'; 
 
 export function Notifications(): React.JSX.Element {
   const handleSaveChanges = () => {
@@ -22,7 +22,7 @@ export function Notifications(): React.JSX.Element {
       title: 'O‘zgarishlar saqlandi!',
       text: 'Barcha o‘zgarishlaringiz muvaffaqiyatli saqlandi.',
       showConfirmButton: false,
-      timer: 2000, // 2 soniya davomida ko'rsatiladi
+      timer: 2000, 
       timerProgressBar: true,
     });
   };

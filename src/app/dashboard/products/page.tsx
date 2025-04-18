@@ -54,10 +54,7 @@ const ProductsPage = () => {
 
   const handleUpdateProduct = async (updated: any) => {
     const token = localStorage.getItem('custom-auth-token');
-    if (!token) {
-      console.error("Token yo‘q, iltimos qayta login qiling.");
-      return;
-    }
+    if (!token) return console.error("Token yo‘q");
   
     try {
       const res = await fetch(`https://keldibekov.online/products/${updated?.id}`, {
@@ -70,11 +67,8 @@ const ProductsPage = () => {
       });
   
       if (!res.ok) throw new Error('Xatolik: mahsulot yangilanmadi');
-      const updatedProduct = await res.json();
   
-      setProducts((prev) =>
-        prev?.map((p) => (p?.id === updatedProduct?.id ? updatedProduct : p))
-      );
+      await fetchProducts();
       setEditProduct(null);
     } catch (err) {
       console.error('Yangilashda xatolik:', err);
