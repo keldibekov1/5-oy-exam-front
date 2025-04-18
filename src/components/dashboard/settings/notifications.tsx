@@ -13,8 +13,20 @@ import FormGroup from '@mui/material/FormGroup';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
+import Swal from 'sweetalert2';  // SweetAlertni import qilish
 
 export function Notifications(): React.JSX.Element {
+  const handleSaveChanges = () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'O‘zgarishlar saqlandi!',
+      text: 'Barcha o‘zgarishlaringiz muvaffaqiyatli saqlandi.',
+      showConfirmButton: false,
+      timer: 2000, // 2 soniya davomida ko'rsatiladi
+      timerProgressBar: true,
+    });
+  };
+
   return (
     <form
       onSubmit={(event) => {
@@ -48,7 +60,9 @@ export function Notifications(): React.JSX.Element {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Save changes</Button>
+          <Button variant="contained" onClick={handleSaveChanges}>
+            Save changes
+          </Button>
         </CardActions>
       </Card>
     </form>
